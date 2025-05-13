@@ -1,0 +1,12 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.py]
+# https://peps.python.org/pep-0008/#indentation
+indent_style = space
+indent_size = 4
