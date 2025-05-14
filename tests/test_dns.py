@@ -8,8 +8,8 @@ class TestDNSDomainGetAll(unittest.TestCase):
     def setUp(self):
 
         # Initialize the API client with mock configuration
-        self.api = rackcorpapi.Client(
-            cred=rackcorpapi.ApiCredential(
+        self.client = rackcorpapi.Client(
+            credential=rackcorpapi.ApiCredential(
                 api_uuid="mock_api_uuid",
                 api_secret="mock_api_secret",
             ),
@@ -19,25 +19,22 @@ class TestDNSDomainGetAll(unittest.TestCase):
     def test_dns_domain_getall(self):
         # Mock response data
         mock_response = [
-            {"id": 1, "domain": "example.com", "status": "active"},
-            {"id": 2, "domain": "test.com", "status": "inactive"},
+            rackcorpapi.DnsDomain.from_dict({"id": 1, "name": "example.com"}),
+            rackcorpapi.DnsDomain.from_dict({"id": 7, "name": "test.com"}),
         ]
 
         # Mock the API call
         def mock_getall():
             return mock_response
 
-        self.api.dns_domain_getall = mock_getall
+        self.client.dns.domain_getall = mock_getall
 
         # Call the method
-        response = self.api.dns_domain_getall()
+        response = self.client.dns.domain_getall()
 
         # Assertions
         self.assertIsInstance(response, list)
         self.assertEqual(len(response), 2)
-        self.assertEqual(response[0]["domain"], "example.com")
-        self.assertEqual(response[1]["status"], "inactive")
-
-
-if __name__ == "__main__":
-    unittest.main()
+        self.assertIsInstance(response[0], rackcorpapi.DnsDomain)
+        self.assertEqual(response[0].name, "example.com")
+        self.assertEqual(response[1].id, 7)
