@@ -1,10 +1,11 @@
 from . import api, dicthelp
+from .strenum import StrEnum
 import dataclasses
 import enum
 import typing
 
 
-class DnsRecordType(enum.StrEnum):
+class DnsRecordType(StrEnum):
     A = "A"
     AHASHED = "AHASHED"
     AAAA = "AAAA"
